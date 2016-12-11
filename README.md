@@ -1,2 +1,4 @@
-# hangman-cmd-game
-Hangman command line python game
+# Python Hangman command line game
+Hangman command line game written in Python.
+
+Compatible from version 3.0
