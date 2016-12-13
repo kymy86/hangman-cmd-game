@@ -8,7 +8,7 @@ def run_game():
     loader = WordsLoader()
     pic = pics()
     your_name = input("Enter your name\n")
-    print("{}, welcome in the Magic Hangman game. Press enter to continue\n".format(your_name))
+    print("{}, welcome in the Magic Hangman game.".format(your_name))
     loader.build_word_dict()
     print("\n")
     word = loader.get_words_from_list()
@@ -39,12 +39,13 @@ def run_game():
                 if answer.upper() in ["Y", "N"]:
                     break
             if answer.upper() == "Y":
-                guess_word = input("Guess the word\n")
+                guess_word = input("Guess the word:  ")
                 if guess_word == word:
                     success = True
                     break
                 else:
-                    print("{}".format(pic[attempt+1]))
+                    print("You're wrong\n")
+                    attempt += 1
         else:
             print("You're wrong\n")
             print("{}".format(" ".join(guessing_word)))
