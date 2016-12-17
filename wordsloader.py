@@ -63,7 +63,7 @@ class WordsLoader:
             with open(self._DICTNAME, "wb") as file:
                 file.write(data)
         except urllib.error.HTTPError:
-            logging.warning("# I can't download the dictionary file'")
+            logging.warning("# I can't download the dictionary file")
 
     def validate_dictionary(self):
         """
@@ -80,12 +80,18 @@ class WordsLoader:
         words_filename.close()
         shutil.move(tempfile.name, self._DICTNAME)
 
-    def get_words_from_list(self):
+    def get_word_from_list(self):
+        """
+        Return a random word by picking it from a
+        the loaded list
+        """
         if self.built:
             dict_file = open(self._DICTNAME, 'r')
             lines = dict_file.readlines()
             dict_file.close()
             index = random.randrange(0, len(lines))
             return lines[index].strip()
+        else:
+            logging.warning("# Dictionary has not built yet")
 
 

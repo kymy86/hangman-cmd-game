@@ -2,62 +2,37 @@
 
 from wordsloader import WordsLoader
 from hangmanpic import pics
+from hangmanengine import HangEngine
 
 
 def run_game():
     loader = WordsLoader()
     pic = pics()
-    your_name = input("Enter your name\n")
-    print("{}, welcome in the Magic Hangman game.".format(your_name))
+    your_name = input("Enter your name:     ")
+    print("{}, welcome in the Magic Hangman game.\n".format(your_name))
     loader.build_word_dict()
-    print("\n")
-    word = loader.get_words_from_list()
+    word = loader.get_word_from_list()
     print(word)
-
+    run = True
     attempt = 0
-    success = False
-    word_length = len(word)
-    word_in_list = list(word)
-    guessing_word = [None] * word_length
-    for i in range(0, word_length):
-        guessing_word[i] = "_"
+    hangengine = HangEngine(word)
 
-    while attempt < len(pic)-1:
-
+    while run is True:
         print("{}".format(pic[attempt]))
-        guess_letter = input("Guess your letter\n")
-        if guess_letter.lower() in word_in_list:
-            guess_letter_index = word_in_list.index(guess_letter.lower())
-            guessing_word[guess_letter_index] = guess_letter.lower()
-            word_in_list[guess_letter_index] = "_"
-            print("{}".format(" ".join(guessing_word)))
-            if "".join(guessing_word) == word:
-                success = True
-                break
-            while True:
-                answer = input("Would you like to guess the word? (Y/N)\n")
-                if answer.upper() in ["Y", "N"]:
-                    break
-            if answer.upper() == "Y":
-                guess_word = input("Guess the word:  ")
-                if guess_word == word:
-                    success = True
-                    break
-                else:
-                    print("You're wrong\n")
-                    attempt += 1
-        else:
-            print("You're wrong\n")
-            print("{}".format(" ".join(guessing_word)))
+        print("{}".format(" ".join(hangengine.guessing_word)))
+        guess_letter = input("Guess your letter ==> ")
+        run = hangengine.hangman_engine(attempt, len(pic)-1, guess_letter)
+        if hangengine.status == 2:
+            print("{}".format(" ".join(hangengine.guessing_word)))
+        elif hangengine.status == 3:
+            print("{}".format(" ".join(hangengine.guessing_word)))
             attempt += 1
 
-    if success:
-        print("Congrats {}! You guessed the word!".format(your_name))
-    else:
+    if hangengine.status == -1:
         print("{}".format(pic[len(pic)-1]))
-        print("{} you lost. The words was {}".format(your_name, word))
-
-
+        print("{} you lost. The word was {}".format(your_name, word))
+    else:
+        print("Wooow {}! You guessed the word {} ".format(your_name, word))
 
 if __name__ == '__main__':
     run_game()
