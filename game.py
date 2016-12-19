@@ -1,18 +1,23 @@
-#!/usr/bin/python3
+"""
+Game of hangmang writte in Python
+"""
 
+#!/usr/bin/python3
 from wordsloader import WordsLoader
 from hangmanpic import pics
 from hangmanengine import HangEngine
 
 
 def run_game():
+    """
+    Run hangman game
+    """
     loader = WordsLoader()
     pic = pics()
     your_name = input("Enter your name:     ")
     print("{}, welcome in the Magic Hangman game.\n".format(your_name))
     loader.build_word_dict()
     word = loader.get_word_from_list()
-    print(word)
     run = True
     attempt = 0
     hangengine = HangEngine(word)

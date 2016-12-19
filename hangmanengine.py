@@ -1,9 +1,14 @@
+"""
+This class implement the hangman game
+core logic
+"""
 #!/usr/bin/python3
-
 import logging
 
 class HangEngine:
-
+    """
+    Game Engine
+    """
     status = 0
 
     def __init__(self, word):
@@ -14,6 +19,9 @@ class HangEngine:
         self.guessing_word = self.__build_empty_word()
 
     def hangman_engine(self, u_attempt, p_attempt, guess_letter):
+        """
+        Check if the letter exists, if user guesses the word or not
+        """
         if u_attempt >= p_attempt:
             self.status = -1
             return False

@@ -23,7 +23,7 @@ class WordsLoader:
         """If words file exist, use it, otherwise retrive from remote source """
         dict_name = Path(self._DICTNAME)
         if dict_name.is_file():
-            logging.info("# File already exists. Nothing to do")
+            #logging.info("# File already exists. Nothing to do")
             self.built = True
         else:
             self.scraping_words_with_progress()
