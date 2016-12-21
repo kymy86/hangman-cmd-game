@@ -19,6 +19,14 @@ class WordsLoader:
     def __init__(self):
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
+    @property
+    def dictname(self):
+        return self._DICTNAME
+
+    @property
+    def wordsurl(self):
+        return self._WORDSURL
+
     def build_word_dict(self):
         """If words file exist, use it, otherwise retrive from remote source """
         dict_name = Path(self._DICTNAME)
@@ -48,7 +56,6 @@ class WordsLoader:
             file_total_bytes = int(meta['Content-Length'])
             data_blocks = []
             total = 0
-
             while True:
                 block = dict_file.read(1024)
                 data_blocks.append(block)
@@ -72,12 +79,10 @@ class WordsLoader:
         """
         tempfile = NamedTemporaryFile(delete=False)
         regexp = re.compile(b"^[a-z][^']{4}$")
-        words_filename = open(self._DICTNAME, 'rb')
-        for i in words_filename:
-            match = regexp.match(i)
-            if match is not None:
-                tempfile.write(i)
-        words_filename.close()
+        with open(self._DICTNAME, 'rb') as words_filename:
+            for i in words_filename:
+                if regexp.match(i) is not None:
+                    tempfile.write(i)
         shutil.move(tempfile.name, self._DICTNAME)
 
     def get_word_from_list(self):
@@ -86,9 +91,8 @@ class WordsLoader:
         the loaded list
         """
         if self.built:
-            dict_file = open(self._DICTNAME, 'r')
-            lines = dict_file.readlines()
-            dict_file.close()
+            with open(self._DICTNAME, 'r') as dict_file:
+                lines = dict_file.readlines()
             index = random.randrange(0, len(lines))
             return lines[index].strip()
         else:

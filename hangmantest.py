@@ -19,20 +19,20 @@ class WordLoaderTest(unittest.TestCase):
         The wordLoader should load if the file exists
         """
         try:
-            os.remove(self.wordLoader._DICTNAME)
+            os.remove(self.wordLoader.dictname)
         except OSError:
             pass
         self.wordLoader.build_word_dict()
-        self.assertTrue(os.path.exists(self.wordLoader._DICTNAME))
+        self.assertTrue(os.path.exists(self.wordLoader.dictname))
 
     def test_dict_valid(self):
         """
         All words in the dictionary must have at least 4 chars
         """
         self.wordLoader.build_word_dict()
-        dict_file = open(self.wordLoader._DICTNAME, 'r')
-        lines = dict_file.readlines()
-        dict_file.close()
+        with open(self.wordLoader.dictname, 'r') as dict_file:
+            lines = dict_file.readlines()
+
         for i in lines:
             self.assertGreaterEqual(len(i), 4)
 
@@ -80,10 +80,6 @@ class HangmanEngineTest(unittest.TestCase):
         res = self.hangengine.hangman_engine(2, 5, 's')
         self.assertFalse(res)
         self.assertEqual("".join(self.hangengine.guessing_word), 'test')
-
-
-
-
 
 
 if __name__ == '__main__':
