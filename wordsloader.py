@@ -1,6 +1,6 @@
-#!/usr/bin/python3
 import logging
-import urllib.request
+from urllib.request import Request
+from urllib import request, error
 from pathlib import Path
 import shutil
 from tempfile import NamedTemporaryFile
@@ -42,17 +42,20 @@ class WordsLoader:
     def scraping_words_file(self):
         """ Retrive words file from remote source"""
         try:
-            with urllib.request.urlopen(self._WORDSURL) as response, open(self._DICTNAME, 'wb') as dict_file:
+            with request.urlopen(self._WORDSURL) as response, open(self._DICTNAME, 'wb') as dict_file:
                 shutil.copyfileobj(response, dict_file)
-        except urllib.error.HTTPError:
+        except error.HTTPError:
             logging.warning("# I can't download the dictionary file'")
 
     def scraping_words_with_progress(self):
         """ Retrieve words file from remote source displaying a progress bar"""
         try:
-            dict_file = urllib.request.urlopen(self._WORDSURL)
+            req = Request(self._WORDSURL)
+            req.add_header('Accept-Encoding', "")
+            dict_file = request.urlopen(req)
             meta = dict_file.info()
-            print("Content-Length: {} bytes".format(meta['Content-Length']))
+            print(meta)
+            #print("Content-Length: {} bytes".format(meta['Content-Length']))
             file_total_bytes = int(meta['Content-Length'])
             data_blocks = []
             total = 0
@@ -69,7 +72,7 @@ class WordsLoader:
             dict_file.close()
             with open(self._DICTNAME, "wb") as file:
                 file.write(data)
-        except urllib.error.HTTPError:
+        except error.HTTPError:
             logging.warning("# I can't download the dictionary file")
 
     def validate_dictionary(self):
@@ -97,5 +100,3 @@ class WordsLoader:
             return lines[index].strip()
         else:
             logging.warning("# Dictionary has not built yet")
-
-

@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import unittest
 import os
 from hangmanengine import HangEngine
@@ -32,7 +31,7 @@ class WordLoaderTest(unittest.TestCase):
         self.wordLoader.build_word_dict()
         with open(self.wordLoader.dictname, 'r') as dict_file:
             lines = dict_file.readlines()
-
+    
         for i in lines:
             self.assertGreaterEqual(len(i), 4)
 

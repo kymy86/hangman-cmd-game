@@ -2,7 +2,6 @@
 This class implement the hangman game
 core logic
 """
-#!/usr/bin/python3
 import logging
 
 class HangEngine:
@@ -48,6 +47,3 @@ class HangEngine:
     @property
     def guessing_word(self):
         return self._guessing_word
-
-
-            
