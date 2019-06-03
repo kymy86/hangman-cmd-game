@@ -1,8 +1,6 @@
 """
 Game of hangmang writte in Python
 """
-
-#!/usr/bin/python3
 from wordsloader import WordsLoader
 from hangmanpic import pics
 from hangmanengine import HangEngine
@@ -15,7 +13,7 @@ def run_game():
     loader = WordsLoader()
     pic = pics()
     your_name = input("Enter your name:     ")
-    print("{}, welcome in the Magic Hangman game.\n".format(your_name))
+    print(f"{your_name}, welcome in the Magic Hangman game.\n")
     loader.build_word_dict()
     word = loader.get_word_from_list()
     run = True
@@ -23,7 +21,7 @@ def run_game():
     hangengine = HangEngine(word)
 
     while run is True:
-        print("{}".format(pic[attempt]))
+        print(f"{pic[attempt]}")
         print("{}".format(" ".join(hangengine.guessing_word)))
         guess_letter = input("Guess your letter ==> ")
         run = hangengine.hangman_engine(attempt, len(pic)-1, guess_letter)
@@ -35,9 +33,9 @@ def run_game():
 
     if hangengine.status == -1:
         print("{}".format(pic[len(pic)-1]))
-        print("{} you lost. The word was {}".format(your_name, word))
+        print(f"{your_name} you lost. The word was {word}")
     else:
-        print("Wooow {}! You guessed the word {} ".format(your_name, word))
+        print(f"Wooow {your_name}! You guessed the word {word} ")
 
 if __name__ == '__main__':
     run_game()
